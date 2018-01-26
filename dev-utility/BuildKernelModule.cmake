@@ -35,7 +35,7 @@ function(module_kbuild module_name module_files module_include_dirs module_defs 
     module_include_directories("${module_include_dirs}" kincludes_string)
     module_add_definitions("${module_defs}" kdefintions_string)
     set(${output_string}
-"${module_name}-m += ${module_name}.o
+"obj-m += ${module_name}.o
 ${kobjects_string}
 
 ${kincludes_string}
@@ -45,12 +45,12 @@ endfunction()
 
 function(add_module module_name module_files module_include_dirs module_defs kernel_dir)
     set(module_build_path  "${PROJECT_BINARY_DIR}/${module_name}")
-    module_kbuild("${module_name}" "${module_files}" "${module_include_dirs}" "${module_include_dirs}" Kbuild_string)
+    module_kbuild("${module_name}" "${module_files}" "${module_include_dirs}" "${module_defs}" Kbuild_string)
     file(WRITE "${module_build_path}/Kbuild" ${Kbuild_string})
 
     foreach(copy_file ${module_files})
         file(RELATIVE_PATH rel_copy_file "${PROJECT_SOURCE_DIR}" ${copy_file} )
-        list(APPEND cmd_list "cp --parents ${copy_file} ${module_build_path}")
+        list(APPEND cmd_list "cp --parents ${rel_copy_file} ${module_build_path}")
     endforeach()
     string(REPLACE ";" "\n" cmd_list_string "${cmd_list}")
     file(WRITE "${module_build_path}/cp.sh" "#!/bin/bash\n${cmd_list_string}")
@@ -59,9 +59,11 @@ function(add_module module_name module_files module_include_dirs module_defs ker
         FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
     file(REMOVE "${module_build_path}/cp.sh")
 
+    execute_process(COMMAND "${module_build_path}/.tmp/cp.sh"
+                    WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
+    message("${CMAKE_MAKE_PROGRAM} -C ${kernel_dir} M=${module_build_path} modules KBUILD_EXTRA_SYMBOLS=${module_build_path}/Module.symvers")
     ADD_CUSTOM_COMMAND(
     OUTPUT  ${module_name}.built
-    COMMAND "${module_build_path}/.tmp/cp.sh"
     COMMAND ${CMAKE_MAKE_PROGRAM} -C ${kernel_dir} M=${module_build_path} modules KBUILD_EXTRA_SYMBOLS=${module_build_path}/Module.symvers
     COMMAND cmake -E touch ${module_name}.built
     COMMENT "Kernel make modules ${module_name}:\n${Kbuild_string}\n"
