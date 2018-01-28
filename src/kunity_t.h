@@ -24,6 +24,12 @@
 #define KUNITY_DEFAULT_TEST_NAME_PREFIX kunity_test_
 #endif
 
+#ifndef KUNITY_DEFAULT_TEST_NAME_PREFIX_STR
+#define STR(s) #s
+#define XSTR(s) STR(s)
+#define KUNITY_DEFAULT_TEST_NAME_PREFIX_STR XSTR(KUNITY_DEFAULT_TEST_NAME_PREFIX)
+#endif
+
 #ifndef KUNITY_CREATE_TEST_NAME
 #define JOIN(x,y) x ## y
 #define CONCAT(x,y) JOIN(x,y)
