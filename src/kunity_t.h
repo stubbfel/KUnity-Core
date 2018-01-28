@@ -20,12 +20,23 @@
 #define KUNITY_LINE_SIZE 1024
 #endif
 
+#ifndef KUNITY_DEFAULT_TEST_NAME_PREFIX
+#define KUNITY_DEFAULT_TEST_NAME_PREFIX kunity_test_
+#endif
+
+#ifndef KUNITY_CREATE_TEST_NAME
+#define JOIN(x,y) x ## y
+#define CONCAT(x,y) JOIN(x,y)
+#define KUNITY_CREATE_TEST_NAME(function_name) CONCAT(KUNITY_DEFAULT_TEST_NAME_PREFIX, function_name)
+#endif
+
 #ifndef KUNITY_TEST
 #define KUNITY_TEST(function_name) \
-    extern void function_name (void); \
-    EXPORT_SYMBOL(function_name); \
-    void function_name()
+    extern void KUNITY_CREATE_TEST_NAME(function_name) (void); \
+    EXPORT_SYMBOL(KUNITY_CREATE_TEST_NAME(function_name)); \
+    void KUNITY_CREATE_TEST_NAME(function_name)()
 #endif
+
 
 //}
 
