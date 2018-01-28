@@ -59,8 +59,6 @@ function(add_module module_name module_files module_include_dirs module_defs ker
         FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
     file(REMOVE "${module_build_path}/cp.sh")
 
-    execute_process(COMMAND "${module_build_path}/.tmp/cp.sh"
-                    WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}")
     message("${CMAKE_MAKE_PROGRAM} -C ${kernel_dir} M=${module_build_path} modules KBUILD_EXTRA_SYMBOLS=${module_build_path}/Module.symvers")
     ADD_CUSTOM_COMMAND(
     OUTPUT  ${module_name}.built
@@ -70,8 +68,16 @@ function(add_module module_name module_files module_include_dirs module_defs ker
     DEPENDS ${PROJECT_SOURCE_DIR}/CMakeLists.txt ${module_files} ${module_include_dirs}
     VERBATIM)
 
+    ADD_CUSTOM_COMMAND(
+    OUTPUT  ${module_name}-copy.built
+    COMMAND "${module_build_path}/.tmp/cp.sh"
+    WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
+    COMMAND cmake -E touch ${module_name}-copy.built
+    DEPENDS ${PROJECT_SOURCE_DIR}/CMakeLists.txt ${module_files} ${module_include_dirs}
+    VERBATIM)
+
     ADD_CUSTOM_TARGET("${module_name}" ALL
-    DEPENDS ${PROJECT_BINARY_DIR}/${module_name}.built
+    DEPENDS ${PROJECT_BINARY_DIR}/${module_name}.built ${PROJECT_BINARY_DIR}/${module_name}-copy.built
     SOURCES ${module_files}
     COMMENT "Building Kernel Module ${module_name}")
 endfunction()
