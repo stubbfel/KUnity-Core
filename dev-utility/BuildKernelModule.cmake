@@ -61,18 +61,18 @@ function(add_module module_name module_files module_include_dirs module_defs ker
 
     message("${CMAKE_MAKE_PROGRAM} -C ${kernel_dir} M=${module_build_path} modules KBUILD_EXTRA_SYMBOLS=${module_build_path}/Module.symvers")
     ADD_CUSTOM_COMMAND(
-    OUTPUT  ${module_name}.built
+    OUTPUT  ${PROJECT_BINARY_DIR}/${module_name}.built
     COMMAND ${CMAKE_MAKE_PROGRAM} -C ${kernel_dir} M=${module_build_path} modules KBUILD_EXTRA_SYMBOLS=${module_build_path}/Module.symvers
-    COMMAND cmake -E touch ${module_name}.built
+    COMMAND cmake -E touch ${PROJECT_BINARY_DIR}/${module_name}.built
     COMMENT "Kernel make modules ${module_name}:\n${Kbuild_string}\n"
     DEPENDS ${PROJECT_SOURCE_DIR}/CMakeLists.txt ${module_files} ${module_include_dirs}
     VERBATIM)
 
     ADD_CUSTOM_COMMAND(
-    OUTPUT  ${module_name}-copy.built
+    OUTPUT  ${PROJECT_BINARY_DIR}/${module_name}-copy.built
     COMMAND "${module_build_path}/.tmp/cp.sh"
     WORKING_DIRECTORY "${PROJECT_SOURCE_DIR}"
-    COMMAND cmake -E touch ${module_name}-copy.built
+    COMMAND cmake -E touch ${PROJECT_BINARY_DIR}/${module_name}-copy.built
     DEPENDS ${PROJECT_SOURCE_DIR}/CMakeLists.txt ${module_files} ${module_include_dirs}
     VERBATIM)
 
