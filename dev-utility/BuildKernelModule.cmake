@@ -53,7 +53,7 @@ function(add_module module_name module_files module_include_dirs module_defs ker
         list(APPEND cmd_list "cp --parents ${rel_copy_file} ${module_build_path}")
     endforeach()
     string(REPLACE ";" "\n" cmd_list_string "${cmd_list}")
-    file(WRITE "${module_build_path}/cp.sh" "#!/bin/bash\n${cmd_list_string}")
+    file(WRITE "${module_build_path}/cp.sh" "#!/bin/sh\n${cmd_list_string}")
     file(COPY "${module_build_path}/cp.sh"
         DESTINATION "${module_build_path}/.tmp"
         FILE_PERMISSIONS OWNER_READ OWNER_WRITE OWNER_EXECUTE GROUP_READ GROUP_EXECUTE WORLD_READ WORLD_EXECUTE)
