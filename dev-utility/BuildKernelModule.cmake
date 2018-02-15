@@ -81,3 +81,12 @@ function(add_module module_name module_files module_include_dirs module_defs ker
     SOURCES ${module_files}
     COMMENT "Building Kernel Module ${module_name}")
 endfunction()
+
+
+#function(get_directory_definitions output_list)
+
+#function(get_target_definitions output_list)
+
+#function(get_directory_includes output_list)
+
+#function(get_target_includes output_list)

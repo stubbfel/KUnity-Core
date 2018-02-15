@@ -1,8 +1,9 @@
 #ifndef UNITY_CONFIG_H
 #define UNITY_CONFIG_H
 
-
+#include "kunity_t.h"
 #include <linux/kernel.h>
+
 #ifndef UNITY_EXCLUDE_SETJMP_H
 #define UNITY_EXCLUDE_SETJMP_H
 #endif
