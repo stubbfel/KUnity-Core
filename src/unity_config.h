@@ -36,4 +36,8 @@
 #define UNITY_INT_WIDTH (32)
 #endif
 
+#ifndef UNITY_OUTPUT_COLOR
+#define UNITY_OUTPUT_COLOR
+#endif
+
 #endif // UNITY_CONFIG_H
