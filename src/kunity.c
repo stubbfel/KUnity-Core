@@ -77,7 +77,7 @@ result_code_e create_default_test_output(/* out*/ ptr_output_functions_s* output
     return OK;
 }
 
-result_code_e run_unity_test(/* in */ const unity_test_function_ptr test_function, /* in */ const ptr_output_functions_s output)
+result_code_e run_unity_test(/* in */ const unity_test_function_ptr test_function, /* in */ const char* file_name, /* in */ const char* test_name, /* in */ int line_number, /* in */ const ptr_output_functions_s output)
 {
     result_code_e result;
     if (output == NULL) {
@@ -89,15 +89,15 @@ result_code_e run_unity_test(/* in */ const unity_test_function_ptr test_functio
         return result;
     }
 
-    UNITY_BEGIN();
-    RUN_TEST(test_function);
+    UnityBegin(file_name);
+    UnityDefaultTestRun(test_function, test_name, line_number);
     UNITY_END();
     return result;
 }
 
-result_code_e run_unity_printk_test(/* in */ const unity_test_function_ptr test_function)
+result_code_e run_unity_printk_test(/* in */ const unity_test_function_ptr test_function, /* in */ const char* file_name, /* in */ const char* test_name, /* in */ int line_number)
 {
-    return run_unity_test(test_function, &prink_output);
+    return run_unity_test(test_function, file_name, test_name, line_number, &prink_output);
 }
 
 //}

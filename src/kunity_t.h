@@ -40,7 +40,7 @@
                                                                                                       \
     result_code_e KUNITY_CREATE_TEST_NAME(function_name)(const ptr_output_functions_s output)         \
     {                                                                                                 \
-        return run_unity_test(function_name, output);                                                 \
+        return run_unity_test(function_name, __FILE__, #function_name, __LINE__, output);             \
     }                                                                                                 \
     EXPORT_SYMBOL(KUNITY_CREATE_TEST_NAME(function_name));                                            \
                                                                                                       \
