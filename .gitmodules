@@ -1,0 +1,6 @@
+[submodule "lib/Unity"]
+	path = lib/Unity
+	url = gitlab@git.stubbe.rocks:kttd/3rd-party-libs/Unity.git
+[submodule "lib/fff"]
+	path = lib/fff
+	url = gitlab@git.stubbe.rocks:kttd/3rd-party-libs/fff.git
