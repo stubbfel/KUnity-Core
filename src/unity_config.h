@@ -1,8 +1,9 @@
 #ifndef UNITY_CONFIG_H
 #define UNITY_CONFIG_H
 
-
+#include "kunity_t.h"
 #include <linux/kernel.h>
+
 #ifndef UNITY_EXCLUDE_SETJMP_H
 #define UNITY_EXCLUDE_SETJMP_H
 #endif
@@ -33,6 +34,10 @@
 
 #ifndef UNITY_INT_WIDTH
 #define UNITY_INT_WIDTH (32)
+#endif
+
+#ifndef UNITY_OUTPUT_COLOR
+#define UNITY_OUTPUT_COLOR
 #endif
 
 #endif // UNITY_CONFIG_H
