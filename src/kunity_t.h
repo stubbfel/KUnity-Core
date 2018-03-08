@@ -66,6 +66,7 @@ typedef enum result_code_eTag {
 typedef void (*redirect_char)(char a);
 
 typedef void (*unity_test_function_ptr)(void);
+
 //}
 
 //{ struct region
@@ -73,6 +74,7 @@ typedef void (*unity_test_function_ptr)(void);
 typedef struct output_functions_sTag {
     redirect_char redirect_char;
 } output_functions_s, *ptr_output_functions_s;
+
 
 typedef result_code_e (*kunity_test_function_ptr)(ptr_output_functions_s);
 

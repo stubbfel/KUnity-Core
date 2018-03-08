@@ -95,9 +95,12 @@ result_code_e run_unity_test(/* in */ const unity_test_function_ptr test_functio
     return result;
 }
 
-result_code_e run_unity_printk_test(/* in */ const unity_test_function_ptr test_function, /* in */ const char* file_name, /* in */ const char* test_name, /* in */ int line_number)
+result_code_e run_unity_printk_test(/* in */ const kunity_test_function_ptr test_function)
 {
-    return run_unity_test(test_function, file_name, test_name, line_number, &prink_output);
+    if (test_function == NULL) {
+        return ERROR_NULL_ARGUMENT;
+    }
+    return test_function(&prink_output);
 }
 
 //}
@@ -110,7 +113,7 @@ static void printk_put_char(char letter)
         const char* c = (const char*)&string_builder.buffer[0];
         printk(c);
         string_builder.write_postion = 0;
-        memset(string_builder.buffer, 0, 1024);
+        memset(string_builder.buffer, 0, KUNITY_LINE_SIZE);
         return;
     }
 
