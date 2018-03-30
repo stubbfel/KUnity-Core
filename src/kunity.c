@@ -34,19 +34,19 @@ typedef struct string_builder_sTag {
 
 static void printk_put_char(char /* letter */);
 
-static result_code_e set_test_output(/*in */ const ptr_output_functions_s output);
+static result_code_e set_test_output(/*in */ const ptr_test_session_control_block_s output);
 
 //}
 
 //{ local  var region
 
-static output_functions_s prink_output = { printk_put_char };
+static test_session_control_block_s prink_output = { printk_put_char,0 ,0 };
 
-static ptr_output_functions_s kunity_output = &prink_output;
+static ptr_test_session_control_block_s kunity_output = &prink_output;
 
 static string_builder_s string_builder;
 
-static size_t sizeof_output = sizeof(output_functions_s);
+static size_t sizeof_output = sizeof(test_session_control_block_s);
 
 //}
 
@@ -57,9 +57,9 @@ void putchark(/* in */ char a)
     kunity_output->redirect_char(a);
 }
 
-result_code_e create_default_test_output(/* out*/ ptr_output_functions_s* output_location)
+result_code_e create_default_test_output(/* out*/ ptr_test_session_control_block_s* output_location)
 {
-    ptr_output_functions_s tmp_output = NULL;
+    ptr_test_session_control_block_s tmp_output = NULL;
     if (output_location == NULL) {
         return ERROR_NULL_ARGUMENT;
     }
@@ -77,7 +77,7 @@ result_code_e create_default_test_output(/* out*/ ptr_output_functions_s* output
     return OK;
 }
 
-result_code_e run_unity_test(/* in */ const unity_test_function_ptr test_function, /* in */ const char* file_name, /* in */ const char* test_name, /* in */ int line_number, /* in */ const ptr_output_functions_s output)
+result_code_e run_unity_test(/* in */ const unity_test_function_ptr test_function, /* in */ const char* file_name, /* in */ const char* test_name, /* in */ int line_number, /* in */ const ptr_test_session_control_block_s output)
 {
     result_code_e result;
     if (output == NULL) {
@@ -89,9 +89,17 @@ result_code_e run_unity_test(/* in */ const unity_test_function_ptr test_functio
         return result;
     }
 
-    UnityBegin(file_name);
+    if (output->_skip_start){
+        Unity.TestFile = file_name;
+    } else {
+        UnityBegin(file_name);
+    }
+
     UnityDefaultTestRun(test_function, test_name, line_number);
-    UNITY_END();
+    if (!output->_skip_end){
+        UNITY_END();
+    }
+
     return result;
 }
 
@@ -121,7 +129,7 @@ static void printk_put_char(char letter)
     string_builder.write_postion = (string_builder.write_postion + 1) % KUNITY_LINE_SIZE;
 }
 
-static result_code_e set_test_output(/* in */ const ptr_output_functions_s output)
+static result_code_e set_test_output(/* in */ const ptr_test_session_control_block_s output)
 {
     if (output == NULL) {
         return ERROR_NULL_ARGUMENT;

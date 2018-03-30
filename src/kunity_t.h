@@ -34,16 +34,16 @@
 #endif
 
 #ifndef KUNITY_TEST
-#define KUNITY_TEST(function_name)                                                                    \
-    extern result_code_e KUNITY_CREATE_TEST_NAME(function_name)(const ptr_output_functions_s output); \
-    static void function_name(void);                                                                  \
-                                                                                                      \
-    result_code_e KUNITY_CREATE_TEST_NAME(function_name)(const ptr_output_functions_s output)         \
-    {                                                                                                 \
-        return run_unity_test(function_name, __FILE__, #function_name, __LINE__, output);             \
-    }                                                                                                 \
-    EXPORT_SYMBOL(KUNITY_CREATE_TEST_NAME(function_name));                                            \
-                                                                                                      \
+#define KUNITY_TEST(function_name)                                                                              \
+    extern result_code_e KUNITY_CREATE_TEST_NAME(function_name)(const ptr_test_session_control_block_s output); \
+    static void function_name(void);                                                                            \
+                                                                                                                \
+    result_code_e KUNITY_CREATE_TEST_NAME(function_name)(const ptr_test_session_control_block_s output)         \
+    {                                                                                                           \
+        return run_unity_test(function_name, __FILE__, #function_name, __LINE__, output);                       \
+    }                                                                                                           \
+    EXPORT_SYMBOL(KUNITY_CREATE_TEST_NAME(function_name));                                                      \
+                                                                                                                \
     static void function_name()
 #endif
 
@@ -71,16 +71,16 @@ typedef void (*unity_test_function_ptr)(void);
 
 //{ struct region
 
-typedef struct output_functions_sTag {
+typedef struct test_session_control_block_sTag {
     redirect_char redirect_char;
-} output_functions_s, *ptr_output_functions_s;
+    bool _skip_start;
+    bool _skip_end;
+} test_session_control_block_s, *ptr_test_session_control_block_s;
 
-
-typedef result_code_e (*kunity_test_function_ptr)(ptr_output_functions_s);
+typedef result_code_e (*kunity_test_function_ptr)(ptr_test_session_control_block_s);
 
 typedef struct test_sTag {
     const char* name;
-    const char* modul_name;
     kunity_test_function_ptr test_function;
 } test_s, *ptr_test_s;
 
