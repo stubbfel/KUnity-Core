@@ -5,21 +5,6 @@
 #include <linux/string.h>
 
 //}
-//{ local include region
-
-//}
-
-//{ local define region
-
-//}
-
-//{ local enum region
-
-//}
-
-//{ local typedef region
-
-//}
 
 //{local struct region
 
@@ -40,7 +25,7 @@ static result_code_e set_test_output(/*in */ const ptr_test_session_control_bloc
 
 //{ local  var region
 
-static test_session_control_block_s prink_output = { printk_put_char,0 ,0 };
+static test_session_control_block_s prink_output = { printk_put_char, 0, 0 };
 
 static ptr_test_session_control_block_s kunity_output = &prink_output;
 
@@ -89,14 +74,14 @@ result_code_e run_unity_test(/* in */ const unity_test_function_ptr test_functio
         return result;
     }
 
-    if (output->_skip_start){
+    if (output->_skip_start) {
         Unity.TestFile = file_name;
     } else {
         UnityBegin(file_name);
     }
 
     UnityDefaultTestRun(test_function, test_name, line_number);
-    if (!output->_skip_end){
+    if (!output->_skip_end) {
         UNITY_END();
     }
 

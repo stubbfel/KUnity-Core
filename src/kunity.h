@@ -3,15 +3,10 @@
 #include "kunity_t.h"
 
 //{ global include region
+
 #include <unity.h>
-//}
-//{ local include region
 
 //}
-
-#ifdef __cplusplus
-extern "C" {
-#endif
 
 //{ function region
 
@@ -24,9 +19,5 @@ extern result_code_e run_unity_test(/* in */ const unity_test_function_ptr test_
 extern result_code_e run_unity_printk_test(/* in */ const kunity_test_function_ptr test_function);
 
 //}
-
-#ifdef __cplusplus
-}
-#endif
 
 #endif // KUNITY_H

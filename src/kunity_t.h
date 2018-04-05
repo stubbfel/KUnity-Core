@@ -7,9 +7,6 @@
 #include <linux/types.h>
 
 //}
-//{ local include region
-
-//}
 
 //{ define region
 
